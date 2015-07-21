@@ -8,7 +8,6 @@
       "m_doPUreweighting": false,
       "m_lumiCalcFileNames": "",
       "m_PRWFileNames": "",
-      "m_PU_default_channel": ,
       "m_applyEventCleaningCut": true,
       "m_vertexContainerName": "PrimaryVertices",
       "m_applyPrimaryVertexCut": true,
@@ -19,11 +18,11 @@
       "m_storePassAny": false,
       "m_storePassL1": false,
       "m_storePassHLT": false,
-      "m_storeTrigKeys": false,
+      "m_storeTrigKeys": false
     }
   },
   {
-    "class": "JetPlotsAlgo",
+    "class": "JetHistsAlgo",
     "configs": {
       "m_debug": false,
       "m_inContainerName": "AntiKt4EMTopoJets",
@@ -68,12 +67,18 @@
     }
   },
   {
-    "class": "JetPlotsAlgo",
+    "class": "JetHistsAlgo",
     "configs": {
       "m_debug": false,
       "m_inContainerName": "AntiKt4EMTopoJets_PassPreSel",
       "m_detailStr": "kinematic",
       "m_name": "PassPreSel"
+    }
+  },
+  {
+    "class": "MinixAOD",
+    "configs": {
+      "m_debug": false
     }
   }
 ]

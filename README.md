@@ -32,7 +32,11 @@ rc compile
 ### Dependencies
  - dependencies are in [cmt/Makefile.RootCore](cmt/Makefile.RootCore)
 
-## Functionality Included
+## Quick Start
+
+```
+xAH_run.py --nevents=1000 --config xAODPerfTools/data/jetSelect.json /share/t3data3/kratsg/xAODs/mc15_13TeV.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.merge.AOD.e3698_s2608_s2183_r6630_r6264_tid05419191_00/AOD.05419191._000003.pool.root.1
+```
 
 ## Authors
 - [David Miller](https://github.com/fizisist)
