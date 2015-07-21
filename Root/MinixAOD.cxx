@@ -6,6 +6,8 @@
 
 #include "EventLoop/OutputStream.h"
 
+#include "xAODAnaHelpers/tools/ReturnCheck.h"
+
 // EDM includes:
 #include "xAODEventInfo/EventInfo.h"
 
@@ -59,26 +61,26 @@ EL::StatusCode MinixAOD :: initialize ()
   if(!m_event->writeTo(file_xAOD).isSuccess()) return EL::StatusCode::FAILURE;
 
   // tools to store the meta data in the output mini-xAOD
-  m_metadata_tool = new FileMetaDataTool();
+  m_metadata_tool = new xAODMaker::FileMetaDataTool();
   if( !m_metadata_tool->initialize().isSuccess() ){
-    Error(APP_NAME, "Cannot intialize FileMetaDataTool..." );
-    Error(APP_NAME, "Exiting... " );
+    Error("initialize()", "Cannot intialize FileMetaDataTool..." );
+    Error("initialize()", "Exiting... " );
     return EL::StatusCode::FAILURE;
   }else{
-    Info(APP_NAME,"FileMetaDataTool initialized... " );
+    Info("initialize()","FileMetaDataTool initialized... " );
   }
 
-  m_trigger_metadata_tool = new TriggerMenuMetaDataTool();
+  m_trigger_metadata_tool = new xAODMaker::TriggerMenuMetaDataTool();
   if( !m_trigger_metadata_tool->initialize().isSuccess() ){
-    Error(APP_NAME, "Cannot intialize TriggerMenuMetaDataTool..." );
-    Error(APP_NAME, "Exiting... " );
+    Error("initialize()", "Cannot intialize TriggerMenuMetaDataTool..." );
+    Error("initialize()", "Exiting... " );
     return EL::StatusCode::FAILURE;
   }else{
-    Info(APP_NAME,"TriggerMenuMetaDataTool initialized... " );
+    Info("initialize()","TriggerMenuMetaDataTool initialized... " );
   }
 
   if(m_debug) {
-    CHECK( m_trigger_metadata_tool->setProperty( "OutputLevel", MSG::VERBOSE ) );
+    RETURN_CHECK("initialize()", m_trigger_metadata_tool->setProperty( "OutputLevel", MSG::VERBOSE ), "" );
   }
 
   return EL::StatusCode::SUCCESS;

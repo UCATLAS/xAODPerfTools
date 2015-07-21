@@ -18,15 +18,17 @@
 
 class MinixAOD : public EL::Algorithm
 {
+  public:
+    bool m_debug;
 
   private:
     xAOD::TEvent *m_event; //!
     xAOD::TStore *m_store;  //!
 
-    TrigDecisionTool          *m_trig_decision_tool; //!
-    xAODConfigTool            *m_config_tool;        //!
-    FileMetaDataTool          *m_metadata_tool;      //!
-    TriggerMenuMetaDataTool   *m_trigger_metadata_tool; //!
+    Trig::TrigDecisionTool          *m_trig_decision_tool; //!
+    TrigConf::xAODConfigTool            *m_config_tool;        //!
+    xAODMaker::FileMetaDataTool          *m_metadata_tool;      //!
+    xAODMaker::TriggerMenuMetaDataTool   *m_trigger_metadata_tool; //!
 
     int m_event_count; //!
 
