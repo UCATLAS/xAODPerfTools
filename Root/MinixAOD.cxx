@@ -17,8 +17,6 @@ ClassImp(MinixAOD)
 MinixAOD :: MinixAOD () :
   m_event(nullptr),
   m_store(nullptr),
-  m_trig_decision_tool(nullptr),
-  m_config_tool(nullptr),
   m_metadata_tool(nullptr),
   m_trigger_metadata_tool(nullptr),
   m_event_count(0)
@@ -113,8 +111,6 @@ EL::StatusCode MinixAOD :: finalize ()
   TFile *file_xAOD = wk()->getOutputFile ("output_xAOD");
   if(!m_event->finishWritingTo( file_xAOD ).isSuccess()) return EL::StatusCode::FAILURE;
 
-  if(m_trig_decision_tool) delete m_trig_decision_tool;
-  if(m_config_tool) delete m_config_tool;
   if(m_metadata_tool) delete m_metadata_tool;
   if(m_trigger_metadata_tool) delete m_trigger_metadata_tool;
 

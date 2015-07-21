@@ -12,10 +12,6 @@
 #include "xAODMetaDataCnv/FileMetaDataTool.h"
 #include "xAODTriggerCnv/TriggerMenuMetaDataTool.h"
 
-// trigger
-#include "TrigConfxAOD/xAODConfigTool.h"
-#include "TrigDecisionTool/TrigDecisionTool.h"
-
 class MinixAOD : public EL::Algorithm
 {
   public:
@@ -25,8 +21,6 @@ class MinixAOD : public EL::Algorithm
     xAOD::TEvent *m_event; //!
     xAOD::TStore *m_store;  //!
 
-    Trig::TrigDecisionTool          *m_trig_decision_tool; //!
-    TrigConf::xAODConfigTool            *m_config_tool;        //!
     xAODMaker::FileMetaDataTool          *m_metadata_tool;      //!
     xAODMaker::TriggerMenuMetaDataTool   *m_trigger_metadata_tool; //!
 
