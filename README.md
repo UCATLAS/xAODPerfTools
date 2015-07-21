@@ -18,7 +18,8 @@ The last stable analysis base used is **2.3.18**. To install,
 mkdir myRootCore && cd $_
 rcSetup Base,2.3.18
 git clone https://github.com/UCATLAS/xAODAnaHelpers
-cd xAODAnaHelpers && git checkout 00-03-05 && cd ../
+cd xAODAnaHelpers && git checkout 00-03-12 && cd ../
+python xAODAnaHelpers/scripts/checkoutASGtags.py 2.3.18
 
 git clone https://github.com/UCATLAS/xAODPerfTools
 
