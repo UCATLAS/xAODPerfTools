@@ -1,0 +1,3 @@
+atlasoff/Event/xAOD/xAODMetaDataCnv/tags/xAODMetaDataCnv-00-00-01
+atlasoff/Event/xAOD/xAODTriggerCnv/tags/xAODTriggerCnv-00-00-16
+atlasoff/Event/xAOD/xAODMetaData/tags/xAODMetaData-00-00-04

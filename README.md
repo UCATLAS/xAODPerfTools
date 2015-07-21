@@ -22,6 +22,7 @@ cd xAODAnaHelpers && git checkout 00-03-12 && cd ../
 python xAODAnaHelpers/scripts/checkoutASGtags.py 2.3.18
 
 git clone https://github.com/UCATLAS/xAODPerfTools
+rc checkout xAODPerfTools/packages.txt
 
 rc find_packages
 rc compile
