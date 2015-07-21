@@ -7,12 +7,7 @@
 - [Installing](#installing)
   - [Dependencies](#dependencies)
 - [Functionality Included](#functionality-included)
-    - [[Audit.cxx](TheAccountant/Audit.h)](#auditcxxtheaccountantaudith)
-    - [[Preselect.cxx](TheAccountant/Preselect.h)](#preselectcxxtheaccountantpreselecth)
-    - [[Report.cxx](TheAccountant/Report.h)](#reportcxxtheaccountantreporth)
-    - [[CookTheBooks.py](scripts/CookTheBooks.py)](#cookthebookspyscriptscookthebookspy)
 - [Authors](#authors)
-  - [Acknowledgements](#acknowledgements)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
