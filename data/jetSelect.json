@@ -1,0 +1,79 @@
+[
+  { "class": "BasicEventSelection",
+    "configs": {
+      "m_debug": false,
+      "m_truthLevelOnly": false,
+      "m_applyGRLCut": true,
+      "m_GRLxml": "$ROOTCOREBIN/data/xAODAnaHelpers/data15_13TeV.periodAllYear_DetStatus-v63-pro18-01_DQDefects-00-01-02_PHYS_StandardGRL_All_Good.xml",
+      "m_doPUreweighting": false,
+      "m_lumiCalcFileNames": "",
+      "m_PRWFileNames": "",
+      "m_PU_default_channel": ,
+      "m_applyEventCleaningCut": true,
+      "m_vertexContainerName": "PrimaryVertices",
+      "m_applyPrimaryVertexCut": true,
+      "m_PVNTrack": 2,
+      "m_triggerSelection": "HLT_j[0-9]*.*|HLT_[2-9]j[0-9]*.*|HLT_mu0-9]*.*",
+      "m_applyTriggerCut": true,
+      "m_storeTrigDecisions": true,
+      "m_storePassAny": false,
+      "m_storePassL1": false,
+      "m_storePassHLT": false,
+      "m_storeTrigKeys": false,
+    }
+  },
+  {
+    "class": "JetPlotsAlgo",
+    "configs": {
+      "m_debug": false,
+      "m_inContainerName": "AntiKt4EMTopoJets",
+      "m_detailStr": "kinematic",
+      "m_name": "NoPreSel"
+    }
+  },
+  {
+    "class": "JetSelector",
+    "configs": {
+      "m_debug": false,
+      "m_inContainerName": "AntiKt4EMTopoJets",
+      "m_pT_min": 20000.0,
+      "m_outContainerName": "AntiKt4EMTopoJets_PassPreSel",
+      "m_pass_min": -1,
+      "m_useCutFlow": true,
+      "m_inputAlgo": "",
+      "m_outputAlgo": "",
+      "m_createSelectedContainer": true,
+      "m_nToProcess": -1,
+      "m_cleanJets": true,
+      "m_cleanEvtLeadJets": 0,
+      "m_pass_max": -1,
+      "m_pT_max": 1e8,
+      "m_eta_max": 1e8,
+      "m_eta_min": 1e8,
+      "m_detEta_max": 1e8,
+      "m_detEta_min": 1e8,
+      "m_mass_max": 1e8,
+      "m_mass_min": 1e8,
+      "m_rapidity_max": 1e8,
+      "m_rapidity_min": 1e8,
+      "m_truthLabel": -1,
+      "m_doJVF": false,
+      "m_pt_max_JVF": 50e3,
+      "m_eta_max_JVF": 2.4,
+      "m_JVFCut": 0.5,
+      "m_btag_veryloose": false,
+      "m_btag_loose": false,
+      "m_btag_medium": false,
+      "m_btag_tight": false
+    }
+  },
+  {
+    "class": "JetPlotsAlgo",
+    "configs": {
+      "m_debug": false,
+      "m_inContainerName": "AntiKt4EMTopoJets_PassPreSel",
+      "m_detailStr": "kinematic",
+      "m_name": "PassPreSel"
+    }
+  }
+]
