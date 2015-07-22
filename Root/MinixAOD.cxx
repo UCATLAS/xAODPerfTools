@@ -41,7 +41,7 @@ EL::StatusCode MinixAOD :: setupJob (EL::Job& job)
 
 EL::StatusCode MinixAOD :: histInitialize () { return EL::StatusCode::SUCCESS; }
 EL::StatusCode MinixAOD :: fileExecute () { return EL::StatusCode::SUCCESS; }
-EL::StatusCode MinixAOD :: changeInput (bool firstFile) { return EL::StatusCode::SUCCESS; }
+EL::StatusCode MinixAOD :: changeInput (bool /*firstFile*/) { return EL::StatusCode::SUCCESS; }
 
 EL::StatusCode MinixAOD :: initialize ()
 {
@@ -52,34 +52,23 @@ EL::StatusCode MinixAOD :: initialize ()
   Info("initialize()", "Number of events = %lli", m_event->getEntries() ); // print long long int
 
   // output files
-  TFile *file_tree = wk()->getOutputFile ("output_tree");
+  //TFile *file_tree = wk()->getOutputFile ("output_tree");
   //m_tree_maker = new TreeMaker(file_tree, m_doTruth, m_doRcJets, m_doAK10Jets, m_doTRF);
 
   TFile *file_xAOD = wk()->getOutputFile ("output_xAOD");
-  if(!m_event->writeTo(file_xAOD).isSuccess()) return EL::StatusCode::FAILURE;
+  RETURN_CHECK("initialize()", m_event->writeTo(file_xAOD), "Could not set output to file");
 
   // tools to store the meta data in the output mini-xAOD
   m_metadata_tool = new xAODMaker::FileMetaDataTool();
-  if( !m_metadata_tool->initialize().isSuccess() ){
-    Error("initialize()", "Cannot intialize FileMetaDataTool..." );
-    Error("initialize()", "Exiting... " );
-    return EL::StatusCode::FAILURE;
-  }else{
-    Info("initialize()","FileMetaDataTool initialized... " );
-  }
+  RETURN_CHECK("initialize()", m_metadata_tool->initialize(), "Could not initialize FileMetaDataTool");
+  Info("initialize()","FileMetaDataTool initialized... " );
 
   m_trigger_metadata_tool = new xAODMaker::TriggerMenuMetaDataTool();
-  if( !m_trigger_metadata_tool->initialize().isSuccess() ){
-    Error("initialize()", "Cannot intialize TriggerMenuMetaDataTool..." );
-    Error("initialize()", "Exiting... " );
-    return EL::StatusCode::FAILURE;
-  }else{
-    Info("initialize()","TriggerMenuMetaDataTool initialized... " );
-  }
+  RETURN_CHECK("initialize()", m_trigger_metadata_tool->initialize(), "Could not initialize TriggerMenuMetaDataTool");
+  Info("initialize()","TriggerMenuMetaDataTool initialized... " );
 
-  if(m_debug) {
+  if(m_debug)
     RETURN_CHECK("initialize()", m_trigger_metadata_tool->setProperty( "OutputLevel", MSG::VERBOSE ), "" );
-  }
 
   return EL::StatusCode::SUCCESS;
 }
@@ -89,7 +78,7 @@ EL::StatusCode MinixAOD :: execute ()
   // code will go.
   m_event_count++;
 
-  if(m_event_count % 1000 == 0)
+  if(m_event_count % 20000 == 0)
     std::cout << "On event " << m_event_count << std::endl;
 
   std::vector<std::string> copyContainers = {
@@ -118,7 +107,7 @@ EL::StatusCode MinixAOD :: finalize ()
 {
   // output xAOD
   TFile *file_xAOD = wk()->getOutputFile ("output_xAOD");
-  if(!m_event->finishWritingTo( file_xAOD ).isSuccess()) return EL::StatusCode::FAILURE;
+  RETURN_CHECK("finalize()", m_event->finishWritingTo( file_xAOD ), "Could not finish writing to the output xAOD");
 
   if(m_metadata_tool) delete m_metadata_tool;
   if(m_trigger_metadata_tool) delete m_trigger_metadata_tool;
