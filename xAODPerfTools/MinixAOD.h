@@ -16,8 +16,8 @@ class MinixAOD : public EL::Algorithm
 {
   public:
     bool m_debug;
-    std::string m_copyNames;
-    std::string m_deepCopyNames;
+    std::vector<std::string> m_copyNames;
+    std::vector<std::string> m_deepCopyNames;
 
   private:
     xAOD::TEvent *m_event; //!

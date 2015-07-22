@@ -6,20 +6,25 @@
 
 #include "EventLoop/OutputStream.h"
 
+// xAH includes
+#include "xAODAnaHelpers/HelperFunctions.h"
 #include "xAODAnaHelpers/tools/ReturnCheck.h"
+
+// safeDeepCopy
+#include "xAODPerfTools/tools/SafeDeepCopy.h"
+
+namespace HF = HelperFunctions;
 
 // EDM includes:
 #include "xAODEventInfo/EventInfo.h"
+#include "xAODJet/JetContainer.h"
+#include "xAODJet/JetAuxContainer.h"
 
 // this is needed to distribute the algorithm to the workers
 ClassImp(MinixAOD)
 
 MinixAOD :: MinixAOD () :
-  m_event(nullptr),
-  m_store(nullptr),
-  m_metadata_tool(nullptr),
-  m_trigger_metadata_tool(nullptr),
-  m_event_count(0),
+  m_debug(false),
   m_copyNames({
     "EventInfo",
     // we want trigger decisions in the output
@@ -31,7 +36,13 @@ MinixAOD :: MinixAOD () :
     "HLT_xAOD__JetContainer_a4tcemsubFS",
     "HLT_xAOD__JetContainer_a4tcemsubjesFS"
   }),
-  m_deepCopyNames({""})
+  m_deepCopyNames({""}),
+  m_event(nullptr),
+  m_store(nullptr),
+  m_metadata_tool(nullptr),
+  m_trigger_metadata_tool(nullptr),
+  m_event_count(0)
+
 {}
 
 EL::StatusCode MinixAOD :: setupJob (EL::Job& job)
@@ -95,6 +106,31 @@ EL::StatusCode MinixAOD :: execute ()
 
   for(auto contName: m_copyNames)
     RETURN_CHECK("execute()", m_event->copy(contName), std::string("Could not copy "+contName+" over").c_str());
+
+
+  const xAOD::JetContainer* in_jets(nullptr);
+  for(auto contName: m_deepCopyNames){
+    if(contName.empty()) continue;
+    RETURN_CHECK("execute()", HF::retrieve(in_jets, contName, m_event, m_store, m_debug), std::string("Could not retrieve "+contName+". Enable m_debug to find out why.").c_str());
+
+    // make the new containers to store deep copies
+    xAOD::JetContainer* jets_copy(new xAOD::JetContainer);
+    xAOD::JetAuxContainer* jets_copy_aux(new xAOD::JetAuxContainer);
+    // connect the two
+    jets_copy->setStore(jets_copy_aux);
+    // deep copy time
+    for(const auto jet: *in_jets){
+      xAOD::Jet* jet_copy(new xAOD::Jet);
+      jets_copy->push_back(jet_copy);
+      xAOD::safeDeepCopy(*jet, *jet_copy);
+    }
+    // record to output xaod
+    RETURN_CHECK("execute()", m_event->record(jets_copy, contName), std::string("Could not record "+contName+" to output xAOD.").c_str());
+    RETURN_CHECK("execute()", m_event->record(jets_copy_aux, contName+"Aux."), std::string("Could not record "+contName+"Aux. to output xAOD.").c_str());
+
+    // reset in_jets
+    in_jets = nullptr;
+  }
 
   m_event->fill();
   if(m_debug) std::cout << "end of event!" << std::endl;
