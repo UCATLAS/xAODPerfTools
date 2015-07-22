@@ -13,36 +13,31 @@
 // safeDeepCopy
 #include "xAODPerfTools/tools/SafeDeepCopy.h"
 
-namespace HF = HelperFunctions;
+// c++ include(s):
+#include <iostream>
+#include <sstream>
 
 // EDM includes:
 #include "xAODEventInfo/EventInfo.h"
 #include "xAODJet/JetContainer.h"
 #include "xAODJet/JetAuxContainer.h"
 
+namespace HF = HelperFunctions;
+
 // this is needed to distribute the algorithm to the workers
 ClassImp(MinixAOD)
 
 MinixAOD :: MinixAOD () :
   m_debug(false),
-  m_copyNames({
-    "EventInfo",
-    // we want trigger decisions in the output
-    //  make sure metadata is also copied using xAODTrigCnv by initializing tool
-    "xTrigDecision",
-    "TrigConfKeys",
-    "HLT_xAOD__JetContainer_a4tcemjesFS",
-    "HLT_xAOD__JetContainer_a4tcemnojcalibFS",
-    "HLT_xAOD__JetContainer_a4tcemsubFS",
-    "HLT_xAOD__JetContainer_a4tcemsubjesFS"
-  }),
-  m_deepCopyNames({""}),
+  m_copyNames(""),
+  m_deepCopyNames(""),
+  m_copyNames_vec(),
+  m_deepCopyNames_vec(),
   m_event(nullptr),
   m_store(nullptr),
   m_metadata_tool(nullptr),
   m_trigger_metadata_tool(nullptr),
   m_event_count(0)
-
 {}
 
 EL::StatusCode MinixAOD :: setupJob (EL::Job& job)
@@ -93,6 +88,18 @@ EL::StatusCode MinixAOD :: initialize ()
   if(m_debug)
     RETURN_CHECK("initialize()", m_trigger_metadata_tool->setProperty( "OutputLevel", MSG::VERBOSE ), "" );
 
+  // parse and split by space
+  std::string token;
+  std::istringstream ss(m_copyNames);
+  while ( std::getline(ss, token, ' ') ) {
+    m_copyNames_vec.push_back(token);
+  }
+  ss.clear();
+  ss.str(m_deepCopyNames);
+  while( std::getline(ss, token, ' ') ) {
+    m_deepCopyNames_vec.push_back(token);
+  }
+
   return EL::StatusCode::SUCCESS;
 }
 
@@ -104,12 +111,14 @@ EL::StatusCode MinixAOD :: execute ()
   if(m_event_count % 20000 == 0)
     std::cout << "On event " << m_event_count << std::endl;
 
-  for(auto contName: m_copyNames)
+  for(auto contName: m_copyNames_vec){
+    if(contName.empty()) continue;
     RETURN_CHECK("execute()", m_event->copy(contName), std::string("Could not copy "+contName+" over").c_str());
+  }
 
 
   const xAOD::JetContainer* in_jets(nullptr);
-  for(auto contName: m_deepCopyNames){
+  for(auto contName: m_deepCopyNames_vec){
     if(contName.empty()) continue;
     RETURN_CHECK("execute()", HF::retrieve(in_jets, contName, m_event, m_store, m_debug), std::string("Could not retrieve "+contName+". Enable m_debug to find out why.").c_str());
 

@@ -80,7 +80,8 @@
     "class": "MinixAOD",
     "configs": {
       "m_debug": false,
-      "m_deepCopyNames": ["AntiKt4EMTopoJets_PassPreSel"]
+      "m_copyNames": "EventInfo xTrigDecision TrigConfKeys HLT_xAOD__JetContainer_a4tcemjesFS HLT_xAOD__JetContainer_a4tcemnojcalibFS HLT_xAOD__JetContainer_a4tcemsubFS HLT_xAOD__JetContainer_a4tcemsubjesFS",
+      "m_deepCopyNames": "AntiKt4EMTopoJets_PassPreSel"
     }
   }
 ]

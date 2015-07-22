@@ -16,10 +16,13 @@ class MinixAOD : public EL::Algorithm
 {
   public:
     bool m_debug;
-    std::vector<std::string> m_copyNames;
-    std::vector<std::string> m_deepCopyNames;
+    std::string m_copyNames;
+    std::string m_deepCopyNames;
 
   private:
+    std::vector<std::string> m_copyNames_vec; //!
+    std::vector<std::string> m_deepCopyNames_vec; //!
+
     xAOD::TEvent *m_event; //!
     xAOD::TStore *m_store;  //!
 
