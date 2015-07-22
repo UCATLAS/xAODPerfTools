@@ -92,11 +92,20 @@ EL::StatusCode MinixAOD :: execute ()
   if(m_event_count % 1000 == 0)
     std::cout << "On event " << m_event_count << std::endl;
 
-  m_event->copy("EventInfo");
-  // we want trigger decisions in the output
-  //  make sure metadata is also copied using xAODTrigCnv by initializing tool
-  m_event->copy("xTrigDecision");
-  m_event->copy("TrigConfKeys");
+  std::vector<std::string> copyContainers = {
+    "EventInfo",
+    // we want trigger decisions in the output
+    //  make sure metadata is also copied using xAODTrigCnv by initializing tool
+    "xTrigDecision",
+    "TrigConfKeys",
+    "HLT_xAOD__JetContainer_a4tcemjesFS",
+    "HLT_xAOD__JetContainer_a4tcemnojcalibFS",
+    "HLT_xAOD__JetContainer_a4tcemsubFS",
+    "HLT_xAOD__JetContainer_a4tcemsubjesFS"
+  };
+
+  for(auto contName: copyContainers)
+    RETURN_CHECK("execute()", m_event->copy(contName), std::string("Could not copy "+contName+" over").c_str());
 
   m_event->fill();
   if(m_debug) std::cout << "end of event!" << std::endl;
