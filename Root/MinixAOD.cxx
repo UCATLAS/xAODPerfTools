@@ -19,7 +19,19 @@ MinixAOD :: MinixAOD () :
   m_store(nullptr),
   m_metadata_tool(nullptr),
   m_trigger_metadata_tool(nullptr),
-  m_event_count(0)
+  m_event_count(0),
+  m_copyNames({
+    "EventInfo",
+    // we want trigger decisions in the output
+    //  make sure metadata is also copied using xAODTrigCnv by initializing tool
+    "xTrigDecision",
+    "TrigConfKeys",
+    "HLT_xAOD__JetContainer_a4tcemjesFS",
+    "HLT_xAOD__JetContainer_a4tcemnojcalibFS",
+    "HLT_xAOD__JetContainer_a4tcemsubFS",
+    "HLT_xAOD__JetContainer_a4tcemsubjesFS"
+  }),
+  m_deepCopyNames({""})
 {}
 
 EL::StatusCode MinixAOD :: setupJob (EL::Job& job)
@@ -81,19 +93,7 @@ EL::StatusCode MinixAOD :: execute ()
   if(m_event_count % 20000 == 0)
     std::cout << "On event " << m_event_count << std::endl;
 
-  std::vector<std::string> copyContainers = {
-    "EventInfo",
-    // we want trigger decisions in the output
-    //  make sure metadata is also copied using xAODTrigCnv by initializing tool
-    "xTrigDecision",
-    "TrigConfKeys",
-    "HLT_xAOD__JetContainer_a4tcemjesFS",
-    "HLT_xAOD__JetContainer_a4tcemnojcalibFS",
-    "HLT_xAOD__JetContainer_a4tcemsubFS",
-    "HLT_xAOD__JetContainer_a4tcemsubjesFS"
-  };
-
-  for(auto contName: copyContainers)
+  for(auto contName: m_copyNames)
     RETURN_CHECK("execute()", m_event->copy(contName), std::string("Could not copy "+contName+" over").c_str());
 
   m_event->fill();

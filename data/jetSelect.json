@@ -19,7 +19,7 @@
       "m_storePassL1": false,
       "m_storePassHLT": false,
       "m_storeTrigKeys": false,
-      "m_useMetaData": true
+      "m_useMetaData": false
     }
   },
   {
